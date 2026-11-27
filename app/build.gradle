@@ -6,6 +6,7 @@ plugins {
 // (GitHub Actions). Without it (local builds, emulator tests) the debug key is used.
 def signingPassword = System.getenv('SIGNING_PASSWORD')
 def keyFile = rootProject.file('signing/hush.p12')
+def useKey = signingPassword && keyFile.exists()
 
 android {
     namespace 'io.github.samaliyan.hush'
@@ -22,7 +23,7 @@ android {
 
     signingConfigs {
         release {
-            if (signingPassword && keyFile.exists()) {
+            if (useKey) {
                 storeFile keyFile
                 storeType 'pkcs12'
                 storePassword signingPassword
@@ -37,7 +38,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig (signingPassword && keyFile.exists()) ? signingConfigs.release : signingConfigs.debug
+            signingConfig useKey ? signingConfigs.release : signingConfigs.debug
         }
     }
 
