@@ -203,10 +203,11 @@ send +989121234567 "Real message check"
 expect_removed "Flash offer number two" 25
 sleep 4
 adb shell dumpsys notification --noredact > "$OUT/notifications.txt"
-if grep -qF "Real message check" "$OUT/notifications.txt"; then
+if adb logcat -d | grep -q "BugleNotifications: Notification posted"; then
   log "ok: the messaging app shows notifications"
   grep -qF "Flash offer number two" "$OUT/notifications.txt" && fail "notification of a removed text is still shown" || log "ok: notification of the removed text is gone"
   adb logcat -d -s Hush:I | grep -q "notification cancelled" && log "ok: Hush took the notification away itself" || fail "Hush did not cancel any notification"
+  grep -qF "Real message check" "$OUT/notifications.txt" && log "ok: the real text's notification stays" || fail "the real text's notification is missing"
 else
   log "(the messaging app shows no notifications on this emulator: notification removal not checked)"
 fi

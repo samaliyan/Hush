@@ -36,7 +36,6 @@ public final class NotifListener extends NotificationListenerService {
     @Override public void onNotificationPosted(StatusBarNotification sbn) {
         if (!isMessaging(sbn.getPackageName())) return;
         boolean removed = belongsToRemoved(sbn);
-        android.util.Log.i("Hush", "notification posted: " + sbn.getKey() + " when=" + sbn.getNotification().when + " removed=" + removed);
         if (removed) {
             cancel(sbn);
             return;
@@ -70,7 +69,6 @@ public final class NotifListener extends NotificationListenerService {
             return;
         }
         if (all == null) return;
-        android.util.Log.i("Hush", "checking " + all.length + " notifications");
         for (StatusBarNotification sbn : all) {
             if (isMessaging(sbn.getPackageName()) && belongsToRemoved(sbn)) cancel(sbn);
         }
