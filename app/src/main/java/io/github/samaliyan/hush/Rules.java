@@ -29,7 +29,7 @@ final class Rules {
         CONTACT("Sender is in your contacts"),
         ALLOWED_WORD("Contains an allowed word"),
         BLOCKED_SENDER("Sender is on your Block list"),
-        UNSUBSCRIBE_CODE("Has an unsubscribe code (لغو)"),
+        UNSUBSCRIBE_CODE("Has an unsubscribe code"),
         CODE_OR_BANK("Looks like a login code or bank message"),
         BLOCKED_WORD("Contains a blocked word"),
         AD_LINE("Sent from an advertising line"),

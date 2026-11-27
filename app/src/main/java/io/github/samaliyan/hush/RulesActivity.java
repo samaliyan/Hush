@@ -118,6 +118,8 @@ public final class RulesActivity extends Screen {
             List<String> now = get.get(prefs);
             if (!now.contains(s)) now.add(s);
             set.set(prefs, now);
+            android.view.inputmethod.InputMethodManager im = getSystemService(android.view.inputmethod.InputMethodManager.class);
+            if (im != null) im.hideSoftInputFromWindow(f.getWindowToken(), 0);
             rebuild();
         };
         b.setOnClickListener(v -> doAdd.run());

@@ -111,7 +111,10 @@ public final class RemovedActivity extends Screen {
             prefs.addRestored(i.sender, i.body);
             if (allowSender) prefs.addAllowNumber(i.sender);
             boolean ok = new SmsStore(this).restore(i.sender, i.body, i.date);
-            if (ok) Vault.get(this).delete(i.id);
+            if (ok) {
+                Vault.get(this).delete(i.id);
+                prefs.addRemoved(-1);       // the counters count texts that stayed removed
+            }
             onUi(() -> {
                 busy.remove(i.id);
                 Toast.makeText(this, ok ? "Restored" : "Android did not allow putting it back.", Toast.LENGTH_LONG).show();

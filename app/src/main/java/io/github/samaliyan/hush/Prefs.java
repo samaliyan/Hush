@@ -95,7 +95,7 @@ final class Prefs {
 
     /** Total number of messages removed since the app was installed. */
     long removedTotal() { return p.getLong("removed_total", 0); }
-    synchronized void addRemoved(int n) { p.edit().putLong("removed_total", removedTotal() + n).apply(); }
+    synchronized void addRemoved(int n) { p.edit().putLong("removed_total", Math.max(0, removedTotal() + n)).apply(); }
 
     /** Time of the last message that should have been removed but Android did not allow it (0 = never). */
     long lastDenied() { return p.getLong("last_denied", 0); }

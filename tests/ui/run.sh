@@ -44,7 +44,7 @@ open_app() { adb shell am start -f 0x14000000 -n "$PKG/.MainActivity" > /dev/nul
 scroll_to() {
   for i in $(seq 1 12); do
     [ -n "$(nfind "$1" "${2:-}")" ] && return 0
-    adb shell input swipe 540 1600 540 900 400; sleep 0.6
+    adb shell input swipe 540 1300 540 600 400; sleep 0.6
   done
   fail "could not scroll to '$1'"; return 1
 }
@@ -73,6 +73,8 @@ adb logcat -c
 SMSAPP=$(adb shell cmd role get-role-holders android.app.role.SMS | tr -d '\r')
 log "default messaging app: ${SMSAPP:-none}"
 [ -n "$SMSAPP" ] || fail "the emulator has no default messaging app"
+# the messaging app may show notifications (Android 13+ asks for it), so hiding them can be checked
+adb shell pm grant "$SMSAPP" android.permission.POST_NOTIFICATIONS 2>/dev/null
 # open the messaging app once, so it finishes its own first start
 adb shell monkey -p "$SMSAPP" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1; sleep 4
 adb shell input keyevent KEYCODE_HOME
@@ -176,7 +178,7 @@ tap "Sender (number or name)"
 adb shell input text "30001234"
 tap "Text"
 adb shell input text "Hello"
-adb shell input keyevent KEYCODE_BACK; sleep 0.5
+adb shell input keyevent KEYCODE_BACK; sleep 0.5      # closes the keyboard
 shot 13_rules_try
 expect "Removed  ·  Sent from an advertising line"
 back
@@ -206,7 +208,7 @@ open_app
 scroll_to "Sound only for real texts"
 tap "Sound only for real texts"
 shot 15_sound_dialog
-expect "Open its settings"
+expect "Open its settings" "(?i)^open its settings$"
 tap "Later" "(?i)^later$"
 send +989121234567 "Real message with Hush sound"
 expect_kept "Real message with Hush sound" 6

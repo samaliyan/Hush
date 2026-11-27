@@ -205,7 +205,7 @@ public final class MainActivity extends Screen {
     private void explainSound(String appName) {
         new AlertDialog.Builder(this, ui.dialogTheme())
                 .setTitle("Silence " + appName)
-                .setMessage("Turn off the sound of " + appName + "'s message notifications. The notifications stay; "
+                .setMessage("In " + appName + ", turn off the sound of message notifications. The notifications stay; "
                         + "only the sound stops.\n\nHush then plays the phone's notification sound for each text it keeps, "
                         + "and nothing for advertising. It follows Silent, Vibrate and Do Not Disturb.")
                 .setPositiveButton("Open its settings", (dlg, w) -> openAppNotificationSettings(new SmsStore(this).defaultSmsApp()))
