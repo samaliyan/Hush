@@ -83,7 +83,9 @@ adb shell input keyevent KEYCODE_HOME
 
 # 1. An advertising text that is on the phone before Hush is set up
 send 20005555 "Old sale before setup"
-in_inbox "Old sale before setup" 30 && log "ok: stored by the messaging app" || fail "the messaging app did not store the text"
+# a fresh emulator's messaging app can be slow on its very first text: wait, and send once more if needed
+if ! in_inbox "Old sale before setup" 40; then send 20005555 "Old sale before setup"; fi
+in_inbox "Old sale before setup" 40 && log "ok: stored by the messaging app" || fail "the messaging app did not store the text"
 
 # 2. First start: setup needed
 adb shell am start -W -n "$PKG/.MainActivity" > /dev/null; sleep 3
@@ -114,11 +116,11 @@ expect "Active"
 # 4. Clean up old texts
 scroll_to "Clean up old texts"
 tap "Clean up old texts"
-wait_for "1 advertising text found" "" 20
+wait_for "advertising text found" "^[0-9]+ advertising texts? found$" 20
 shot 06_clean_list
 expect "Old sale before setup"
-tap "Remove 1 text"
-wait_for "Removed 1 text." "" 20
+tap "Remove" "^Remove [0-9]+ texts?$"
+wait_for "Removed" "^Removed [0-9]+ texts?\.$" 20
 shot 07_cleaned
 expect_removed "Old sale before setup" 5
 back
@@ -204,6 +206,7 @@ adb shell dumpsys notification --noredact > "$OUT/notifications.txt"
 if grep -qF "Real message check" "$OUT/notifications.txt"; then
   log "ok: the messaging app shows notifications"
   grep -qF "Flash offer number two" "$OUT/notifications.txt" && fail "notification of a removed text is still shown" || log "ok: notification of the removed text is gone"
+  adb logcat -d -s Hush:I | grep -q "notification cancelled" && log "ok: Hush took the notification away itself" || fail "Hush did not cancel any notification"
 else
   log "(the messaging app shows no notifications on this emulator: notification removal not checked)"
 fi

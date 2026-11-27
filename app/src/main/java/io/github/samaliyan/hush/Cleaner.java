@@ -99,6 +99,7 @@ final class Cleaner {
                 prefs.addRemoved(r.removed);
                 prefs.setLastDenied(0);
                 for (String b : r.bodies) markRemoved(b);
+                for (Found f : list) markRemovedDate(f.msg.date);
                 NotifListener.cancelMatching();
             }
             if (r.denied > 0 && r.removed == 0) prefs.setLastDenied(System.currentTimeMillis());
@@ -126,6 +127,30 @@ final class Cleaner {
                 else break;
             }
         }
+    }
+
+    private static final List<long[]> RECENT_DATES = new ArrayList<>();     // {message date, time removed}
+
+    /**
+     * Android 15 hides the text of message notifications from other apps ("Sensitive notification content
+     * hidden"), so a notification is also matched by its time: the messaging app gives it the message's date.
+     */
+    static void markRemovedDate(long date) {
+        synchronized (RECENT_DATES) {
+            long now = System.currentTimeMillis();
+            RECENT_DATES.removeIf(d -> now - d[1] > RECENT_MS);
+            RECENT_DATES.add(new long[]{date, now});
+        }
+    }
+
+    /** A message removed in the last minutes has this date (within a second). */
+    static boolean wasRemovedAt(long when) {
+        if (when <= 0) return false;
+        long now = System.currentTimeMillis();
+        synchronized (RECENT_DATES) {
+            for (long[] d : RECENT_DATES) if (now - d[1] <= RECENT_MS && Math.abs(d[0] - when) <= 1000) return true;
+        }
+        return false;
     }
 
     /** The notification text belongs to a message that was removed in the last minutes. */

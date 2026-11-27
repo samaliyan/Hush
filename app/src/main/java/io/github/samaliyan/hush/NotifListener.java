@@ -35,9 +35,9 @@ public final class NotifListener extends NotificationListenerService {
 
     @Override public void onNotificationPosted(StatusBarNotification sbn) {
         if (!isMessaging(sbn.getPackageName())) return;
-        android.util.Log.i("Hush", "notification posted: " + sbn.getKey() + " text=" + lastText(sbn.getNotification())
-                + " removed=" + Cleaner.wasRemoved(lastText(sbn.getNotification())));
-        if (Cleaner.wasRemoved(lastText(sbn.getNotification()))) {
+        boolean removed = belongsToRemoved(sbn);
+        android.util.Log.i("Hush", "notification posted: " + sbn.getKey() + " when=" + sbn.getNotification().when + " removed=" + removed);
+        if (removed) {
             cancel(sbn);
             return;
         }
@@ -72,8 +72,25 @@ public final class NotifListener extends NotificationListenerService {
         if (all == null) return;
         android.util.Log.i("Hush", "checking " + all.length + " notifications");
         for (StatusBarNotification sbn : all) {
-            if (isMessaging(sbn.getPackageName()) && Cleaner.wasRemoved(lastText(sbn.getNotification()))) cancel(sbn);
+            if (isMessaging(sbn.getPackageName()) && belongsToRemoved(sbn)) cancel(sbn);
         }
+    }
+
+    /**
+     * The notification is about a removed text: same text, or — when Android hides the text from Hush — a
+     * single-message notification with the date of a removed text. A group summary is never matched.
+     */
+    private static boolean belongsToRemoved(StatusBarNotification sbn) {
+        Notification n = sbn.getNotification();
+        if (n == null || (n.flags & Notification.FLAG_GROUP_SUMMARY) != 0 || (n.flags & Notification.FLAG_ONGOING_EVENT) != 0) return false;
+        if (Cleaner.wasRemoved(lastText(n))) return true;
+        return messageCount(n) <= 1 && Cleaner.wasRemovedAt(n.when);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static int messageCount(Notification n) {
+        Parcelable[] msgs = n.extras == null ? null : n.extras.getParcelableArray(Notification.EXTRA_MESSAGES);
+        return msgs == null ? 1 : msgs.length;
     }
 
     private void cancel(StatusBarNotification sbn) {
