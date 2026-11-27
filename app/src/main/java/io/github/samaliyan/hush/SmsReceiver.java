@@ -50,6 +50,7 @@ public final class SmsReceiver extends BroadcastReceiver {
             if (prefs.soundForReal()) Alert.play(c);
             return;
         }
+        android.util.Log.i("Hush", "advertising text received");
         // Its notification is taken away as soon as the messaging app shows it.
         Cleaner.markRemoved(body);
         NotifListener.cancelMatching();

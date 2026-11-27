@@ -35,7 +35,8 @@ public final class NotifListener extends NotificationListenerService {
 
     @Override public void onNotificationPosted(StatusBarNotification sbn) {
         if (!isMessaging(sbn.getPackageName())) return;
-        android.util.Log.i("Hush", "notification posted: " + sbn.getKey() + " removed=" + Cleaner.wasRemoved(lastText(sbn.getNotification())));
+        android.util.Log.i("Hush", "notification posted: " + sbn.getKey() + " text=" + lastText(sbn.getNotification())
+                + " removed=" + Cleaner.wasRemoved(lastText(sbn.getNotification())));
         if (Cleaner.wasRemoved(lastText(sbn.getNotification()))) {
             cancel(sbn);
             return;
@@ -65,9 +66,11 @@ public final class NotifListener extends NotificationListenerService {
         try {
             all = getActiveNotifications();
         } catch (Exception e) {
+            android.util.Log.w("Hush", "active notifications: " + e);
             return;
         }
         if (all == null) return;
+        android.util.Log.i("Hush", "checking " + all.length + " notifications");
         for (StatusBarNotification sbn : all) {
             if (isMessaging(sbn.getPackageName()) && Cleaner.wasRemoved(lastText(sbn.getNotification()))) cancel(sbn);
         }

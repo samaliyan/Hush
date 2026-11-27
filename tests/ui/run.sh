@@ -112,6 +112,7 @@ shot 05_main_active
 expect "Active"
 
 # 4. Clean up old texts
+scroll_to "Clean up old texts"
 tap "Clean up old texts"
 wait_for "1 advertising text found" "" 20
 shot 06_clean_list
@@ -141,6 +142,7 @@ fi
 
 # 6. Removed texts: listed, and one is restored
 open_app
+scroll_to "Removed texts"
 tap "Removed texts"
 shot 08_removed
 expect "Big sale today only"
@@ -164,6 +166,7 @@ N3=$(rows)
 back
 
 # 7. Rules: add a block word through the screen, and try a text
+scroll_to "Rules"
 tap "Rules"
 shot 11_rules
 tap "Add a number or name"
@@ -214,6 +217,7 @@ expect "Open its settings" "(?i)^open its settings$"
 tap "Later" "(?i)^later$"
 send +989121234567 "Real message with Hush sound"
 expect_kept "Real message with Hush sound"
+scroll_to "Remove advertising texts"
 tap "Remove advertising texts"
 scroll_top
 shot 16_paused
