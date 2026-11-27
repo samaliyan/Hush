@@ -99,7 +99,10 @@ final class Cleaner {
                 prefs.addRemoved(r.removed);
                 prefs.setLastDenied(0);
                 for (String b : r.bodies) markRemoved(b);
-                for (Found f : list) markRemovedDate(f.msg.date);
+                for (Found f : list) {
+                    markRemovedDate(f.msg.date);
+                    android.util.Log.i("Hush", "removed text dated " + f.msg.date);
+                }
                 NotifListener.cancelMatching();
             }
             if (r.denied > 0 && r.removed == 0) prefs.setLastDenied(System.currentTimeMillis());
