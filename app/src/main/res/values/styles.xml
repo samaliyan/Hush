@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The screens are drawn in code; the theme only sets the first frame and system colours. -->
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:colorPrimary">@color/accent</item>
+    </style>
+    <style name="Dialog.Light" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorAccent">#FF2563EB</item>
+    </style>
+    <style name="Dialog.Dark" parent="android:Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">#FF8AB4FF</item>
+    </style>
+</resources>

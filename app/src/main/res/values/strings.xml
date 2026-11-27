@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hush</string>
+    <string name="listener_name">Hush: hide notifications of removed texts</string>
+    <string name="checking">Checking for updates…</string>
+    <string name="up_to_date">You have the latest version</string>
+    <string name="check_failed">Could not reach GitHub. Check your internet connection and try again.</string>
+    <string name="update_title">Update available</string>
+    <string name="update_message">Hush %1$s (build %2$d) is available. You have %3$s (build %4$d).</string>
+    <string name="update_now">Update</string>
+    <string name="later">Later</string>
+    <string name="downloading">Downloading…</string>
+    <string name="downloading_pct">Downloading… %1$d%%</string>
+    <string name="download_failed">Download failed. Please try again.</string>
+    <string name="install_failed">The update could not be installed. Please try again.</string>
+    <string name="install_conflict">This update is signed differently from the installed app. Uninstall Hush, then install the new version from GitHub.</string>
+</resources>
