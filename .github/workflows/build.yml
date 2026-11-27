@@ -38,6 +38,7 @@ jobs:
         env:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: |
+          exec > >(tee -a "$RUNNER_TEMP/build.log") 2>&1
           [ -f signing/hush.p12 ] && exit 0
           if [ -z "$SIGNING_PASSWORD" ]; then
             echo "::error::Repository secret SIGNING_PASSWORD is missing. See signing/README.md."
