@@ -62,9 +62,11 @@ gone() {
   for i in $(seq 1 "${2:-20}"); do inbox | grep -qF -- "$1" || return 0; sleep 1; done; return 1
 }
 expect_removed() { gone "$1" "${2:-20}" && log "ok: removed '$1'" || fail "'$1' was not removed"; }
+# expect_kept TEXT [SECONDS] → the text arrives (within SECONDS, default 15) and is still there 3 s later
 expect_kept() {
-  sleep "${2:-0}"
-  inbox | grep -qF -- "$1" && log "ok: kept '$1'" || fail "'$1' is missing (should be kept)"
+  in_inbox "$1" "${2:-15}" || { fail "'$1' is missing (should be kept)"; return; }
+  sleep 3
+  inbox | grep -qF -- "$1" && log "ok: kept '$1'" || fail "'$1' was removed (should be kept)"
 }
 
 log "API $API"
@@ -127,7 +129,7 @@ send +989121234567 "Hi see you at 5"
 send +989351112222 "حراج ویژه یلدا لغو11"
 send 5000123 "Bank: bardasht: 1,000,000 Mande: 5,000,000"
 expect_removed "Big sale today only" 25
-expect_kept "Your verification code is 48213" 3
+expect_kept "Your verification code is 48213"
 expect_kept "Hi see you at 5"
 expect_kept "Bank: bardasht"
 if inbox | grep -qF "لغو11"; then
@@ -156,7 +158,7 @@ N2=$(rows)
 [ "$N2" -eq $((N1 + 1)) ] && log "ok: restored text is back in the store ($N1 → $N2)" || fail "restored text is not in the store ($N1 → $N2)"
 # a restored text is not removed again by the next pass
 send +989121234567 "Second hello"
-expect_kept "Second hello" 8
+expect_kept "Second hello"
 N3=$(rows)
 [ "$N3" -eq $((N2 + 1)) ] && log "ok: restored text stays" || fail "restored text was removed again ($N2 → $N3)"
 back
@@ -176,6 +178,7 @@ expect "BadSender"
 scroll_to "Sender (number or name)"
 tap "Sender (number or name)"
 adb shell input text "30001234"
+adb shell input keyevent KEYCODE_BACK; sleep 0.8      # closes the keyboard
 tap "Text"
 adb shell input text "Hello"
 adb shell input keyevent KEYCODE_BACK; sleep 0.5      # closes the keyboard
@@ -194,11 +197,10 @@ send 30007777 "Flash offer number two"
 send +989121234567 "Real message check"
 expect_removed "Flash offer number two" 25
 sleep 4
-NOTIF=$(adb shell dumpsys notification --noredact)
-echo "$NOTIF" > "$OUT/notifications.txt"
-if echo "$NOTIF" | grep -qF "Real message check"; then
+adb shell dumpsys notification --noredact > "$OUT/notifications.txt"
+if grep -qF "Real message check" "$OUT/notifications.txt"; then
   log "ok: the messaging app shows notifications"
-  echo "$NOTIF" | grep -qF "Flash offer number two" && fail "notification of a removed text is still shown" || log "ok: notification of the removed text is gone"
+  grep -qF "Flash offer number two" "$OUT/notifications.txt" && fail "notification of a removed text is still shown" || log "ok: notification of the removed text is gone"
 else
   log "(the messaging app shows no notifications on this emulator: notification removal not checked)"
 fi
@@ -211,13 +213,13 @@ shot 15_sound_dialog
 expect "Open its settings" "(?i)^open its settings$"
 tap "Later" "(?i)^later$"
 send +989121234567 "Real message with Hush sound"
-expect_kept "Real message with Hush sound" 6
+expect_kept "Real message with Hush sound"
 tap "Remove advertising texts"
 scroll_top
 shot 16_paused
 expect "Paused"
 send 30008888 "Sale while paused"
-expect_kept "Sale while paused" 8
+expect_kept "Sale while paused" 20
 scroll_to "Remove advertising texts"
 tap "Remove advertising texts"
 scroll_top

@@ -94,6 +94,7 @@ final class Cleaner {
                     r.denied++;
                 }       // else: already removed by another pass meanwhile
             }
+            android.util.Log.i("Hush", "pass: removed " + r.removed + ", refused " + r.denied);
             if (r.removed > 0) {
                 prefs.addRemoved(r.removed);
                 prefs.setLastDenied(0);
