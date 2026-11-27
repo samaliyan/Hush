@@ -1,0 +1,2 @@
+RulesTest: 64 passed, 0 failed
+::error::Repository secret SIGNING_PASSWORD is missing. See signing/README.md.
