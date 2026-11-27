@@ -99,10 +99,7 @@ final class Cleaner {
                 prefs.addRemoved(r.removed);
                 prefs.setLastDenied(0);
                 for (String b : r.bodies) markRemoved(b);
-                for (Found f : list) {
-                    markRemovedDate(f.msg.date);
-                    android.util.Log.i("Hush", "removed text dated " + f.msg.date);
-                }
+                for (Found f : list) markRemovedDate(f.msg.date);
                 NotifListener.cancelMatching();
             }
             if (r.denied > 0 && r.removed == 0) prefs.setLastDenied(System.currentTimeMillis());
@@ -146,12 +143,15 @@ final class Cleaner {
         }
     }
 
-    /** A message removed in the last minutes has this date (within a second). */
+    /**
+     * A message removed in the last minutes has exactly this date. (Google Messages gives the notification the
+     * stored date to the millisecond; a looser match could hide a real text that arrived in the same second.)
+     */
     static boolean wasRemovedAt(long when) {
         if (when <= 0) return false;
         long now = System.currentTimeMillis();
         synchronized (RECENT_DATES) {
-            for (long[] d : RECENT_DATES) if (now - d[1] <= RECENT_MS && Math.abs(d[0] - when) <= 1000) return true;
+            for (long[] d : RECENT_DATES) if (now - d[1] <= RECENT_MS && d[0] == when) return true;
         }
         return false;
     }
