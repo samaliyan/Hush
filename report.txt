@@ -1,0 +1,160 @@
+[ui] API 34
+[ui] default messaging app: com.google.android.apps.messaging
+[ui] sent from 20005555: Old sale before setup
+[ui] ok: stored by the messaging app
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 01_first_start
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Setup needed'
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Hush'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 02_sms_allowed
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Setup needed'
+[ui] ok: kept 'Old sale before setup'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 03_setup_page
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Not given yet'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 03b_setup_page_bottom
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Done'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 04_setup_done
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 05_main_active
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Active'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'advertising text found'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 06_clean_list
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Old sale before setup'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Removed'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 07_cleaned
+[ui] ok: removed 'Old sale before setup'
+[ui] sent from 30001234: Big sale today only
+[ui] sent from 10004455: Your verification code is 48213
+[ui] sent from +989121234567: Hi see you at 5
+[ui] sent from +989351112222: حراج ویژه یلدا لغو11
+[ui] sent from 5000123: Bank: bardasht: 1,000,000 Mande: 5,000,000
+[ui] ok: removed 'Big sale today only'
+[ui] ok: kept 'Your verification code is 48213'
+[ui] ok: kept 'Hi see you at 5'
+[ui] ok: kept 'Bank: bardasht'
+[ui] (Persian text not in the store; checked in Removed texts below)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 08_removed
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Big sale today only'
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Old sale before setup'
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: Persian advertising text removed and listed
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 09_restore_dialog
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Restore this text?'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 10_after_restore
+[ui] ok: restored text is back in the store (3 → 4)
+[ui] sent from +989121234567: Second hello
+[ui] ok: kept 'Second hello'
+[ui] ok: restored text stays
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: could not scroll to 'Rules'
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: cannot find 'Rules'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 11_rules
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: cannot find 'Add a number or name'
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: cannot find 'Add a word'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 12_rules_added
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: expected 'lottery' on screen
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: expected 'BadSender' on screen
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: could not scroll to 'Sender (number or name)'
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: cannot find 'Sender (number or name)'
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: cannot find 'Text'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 13_rules_try
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: expected 'Removed  ·  Sent from an advertising line' on screen
+[ui] sent from +989121112233: You won the lottery today
+[ui] ok: removed 'You won the lottery today'
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 14_main_all_done
+[ui] sent from 30007777: Flash offer number two
+[ui] sent from +989121234567: Real message check
+[ui] ok: removed 'Flash offer number two'
+[ui] (the messaging app shows no notifications on this emulator: notification removal not checked)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 15_sound_dialog
+[ui] (closed a system 'not responding' dialog)
+[ui] ok: sees 'Open its settings'
+[ui] (closed a system 'not responding' dialog)
+[ui] sent from +989121234567: Real message with Hush sound
+[ui] ok: kept 'Real message with Hush sound'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 16_paused
+[ui] (closed a system 'not responding' dialog)
+[ui] FAIL: expected 'Paused' on screen
+[ui] sent from 30008888: Sale while paused
+[ui] ok: kept 'Sale while paused'
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] (closed a system 'not responding' dialog)
+[ui] shot 17_dark_main
+[ui] sent from 30009999: Sale after update
+[ui] ok: removed 'Sale after update'
+[ui] done: 11 failure(s)
