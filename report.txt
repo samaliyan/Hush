@@ -1,0 +1,72 @@
+[ui] API 35
+[ui] default messaging app: com.google.android.apps.messaging
+[ui] sent from 20005555: Old sale before setup
+[ui] ok: stored by the messaging app
+[ui] shot 01_first_start
+[ui] ok: sees 'Setup needed'
+[ui] ok: sees 'Hush'
+[ui] shot 02_sms_allowed
+[ui] ok: sees 'Setup needed'
+[ui] ok: kept 'Old sale before setup'
+[ui] shot 03_setup_page
+[ui] ok: sees 'Not given yet'
+[ui] shot 03b_setup_page_bottom
+[ui] ok: sees 'Done'
+[ui] shot 04_setup_done
+[ui] shot 05_main_active
+[ui] ok: sees 'Active'
+[ui] ok: sees 'advertising text found'
+[ui] shot 06_clean_list
+[ui] ok: sees 'Old sale before setup'
+[ui] ok: sees 'Removed'
+[ui] shot 07_cleaned
+[ui] ok: removed 'Old sale before setup'
+[ui] sent from 30001234: Big sale today only
+[ui] sent from 10004455: Your verification code is 48213
+[ui] sent from +989121234567: Hi see you at 5
+[ui] sent from +989351112222: حراج ویژه یلدا لغو11
+[ui] sent from 5000123: Bank: bardasht: 1,000,000 Mande: 5,000,000
+[ui] ok: removed 'Big sale today only'
+[ui] ok: kept 'Your verification code is 48213'
+[ui] ok: kept 'Hi see you at 5'
+[ui] ok: kept 'Bank: bardasht'
+[ui] (Persian text not in the store; checked in Removed texts below)
+[ui] shot 08_removed
+[ui] ok: sees 'Big sale today only'
+[ui] ok: sees 'Old sale before setup'
+[ui] ok: Persian advertising text removed and listed
+[ui] shot 09_restore_dialog
+[ui] ok: sees 'Restore this text?'
+[ui] shot 10_after_restore
+[ui] ok: restored text is back in the store (3 → 4)
+[ui] sent from +989121234567: Second hello
+[ui] ok: kept 'Second hello'
+[ui] ok: restored text stays
+[ui] shot 11_rules
+[ui] shot 12_rules_added
+[ui] ok: sees 'lottery'
+[ui] ok: sees 'BadSender'
+[ui] shot 13_rules_try
+[ui] ok: sees 'Removed  ·  Sent from an advertising line'
+[ui] sent from +989121112233: You won the lottery today
+[ui] ok: removed 'You won the lottery today'
+[ui] shot 14_main_all_done
+[ui] sent from 30007777: Flash offer number two
+[ui] sent from +989121234567: Real message check
+[ui] ok: removed 'Flash offer number two'
+[ui] ok: the messaging app shows notifications
+[ui] ok: notification of the removed text is gone
+[ui] ok: Hush took the notification away itself
+[ui] ok: the real text's notification stays
+[ui] shot 15_sound_dialog
+[ui] ok: sees 'Open its settings'
+[ui] sent from +989121234567: Real message with Hush sound
+[ui] ok: kept 'Real message with Hush sound'
+[ui] shot 16_paused
+[ui] ok: sees 'Paused'
+[ui] sent from 30008888: Sale while paused
+[ui] ok: kept 'Sale while paused'
+[ui] shot 17_dark_main
+[ui] sent from 30009999: Sale after update
+[ui] ok: removed 'Sale after update'
+[ui] done: 0 failure(s)
