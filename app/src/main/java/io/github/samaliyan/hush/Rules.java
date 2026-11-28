@@ -14,10 +14,11 @@ import java.util.regex.Pattern;
  *   <li>sender on the user's Allow list, or a saved contact: keep;</li>
  *   <li>a word from the user's Allow words: keep;</li>
  *   <li>sender on the user's Block list (a number or the start of a number): remove;</li>
- *   <li>an unsubscribe code ("لغو۱۱", "لغو 11" …). Iranian law requires it in every advertising text,
- *       and real messages (banks, codes, people) never have it: remove;</li>
- *   <li>a login/verification code or a bank transaction (balance, withdrawal …): keep;</li>
- *   <li>a word from the user's Block words: remove;</li>
+ *   <li>a word from the user's Block words: remove (the user's own rule wins over everything built in);</li>
+ *   <li>an unsubscribe code ("لغو۱۱", "لغو 11", "لغو ارسال: ۱۱" …). Iranian law requires it in every
+ *       advertising text, and real messages (banks, codes, people) never have it: remove;</li>
+ *   <li>a login/verification code (a code word and the code's digits) or a bank transaction
+ *       ("مانده: 5,000,000" — a bank word followed by an amount): keep;</li>
  *   <li>sent from a bulk advertising line (1000…, 2000…, 3000…, 5000…), if that rule is on: remove;</li>
  *   <li>anything else: keep.</li>
  * </ol>
@@ -60,17 +61,25 @@ final class Rules {
     static final List<String> AD_LINE_PREFIXES = Collections.unmodifiableList(java.util.Arrays.asList("1000", "2000", "3000", "5000"));
 
     /** "لغو" followed (after at most a few spaces or marks) by a number: the unsubscribe code. */
-    private static final Pattern UNSUBSCRIBE = Pattern.compile("(لغو|انصراف)\\s*(عضویت|ارسال)?[\\s:=\\-_.،,()\\[\\]«»\"'*]{0,4}(عدد\\s*)?[0-9]{1,4}(?![0-9])");
+    private static final Pattern UNSUBSCRIBE = Pattern.compile(
+            "(لغو|انصراف)([\\s:=\\-_.،,؛;()\\[\\]«»\"'*/]|عضویت|ارسال|پیامک|پیام|تبلیغاتی|تبلیغات|عدد|کلمه|کد|را|به)*[0-9]{1,3}(?![0-9])");
 
-    /** Login / verification codes, in Persian and English. */
+    /** Login / verification code words, in Persian and English (kept only together with {@link #CODE_DIGITS}). */
     private static final Pattern CODE = Pattern.compile(
             "(کد|رمز)\\s*(ی|های)?\\s*(تایید|تأیید|تاييد|ورود|یکبار|یک بار|یک‌بار|پویا|فعال\\s*سازی|فعال‌سازی|عبور|امنیتی|موقت|دوم|اعتبارسنجی|احراز)"
                     + "|رمز\\s*پویا|کد\\s*شما|رمز\\s*شما"
                     + "|(?i:\\b(otp|verification|verify|one[- ]?time|passcode|password|login code|security code|your code|auth(entication)? code)\\b)");
 
     /** Bank transaction texts. */
+    private static final Pattern CODE_DIGITS = Pattern.compile("(?<![0-9])[0-9]{4,8}(?![0-9])");
+
+    /**
+     * A bank transaction: a bank word directly followed by an amount ("مانده: 5,000,000", "برداشت 250000").
+     * Advertising also uses these words ("۳ روز مانده", "تا پایان موجودی") but not with an amount after them.
+     */
     private static final Pattern BANK = Pattern.compile(
-            "مانده|موجودی|برداشت\\s*[:：]|واریز\\s*[:：]|انتقال\\s*[:：]|(?i:\\b(mande|balance|bardasht|variz)\\b)");
+            "(مانده|موجودی|برداشت|واریز|انتقال|(?i:mande|balance|bardasht|variz))\\s*[:：=]?\\s*[+-]?"
+                    + "([0-9]{1,3}([,٬،.][0-9]{3})+|[0-9]{4,})");
 
     private final List<String> allowNumbers, allowNames;
     private final List<String> blockNumbers, blockNames;
@@ -110,9 +119,9 @@ final class Rules {
         if (inContacts) return keep(Reason.CONTACT);
         if (containsAny(text, allowWords)) return keep(Reason.ALLOWED_WORD);
         if (!num.isEmpty() ? startsWithAny(num, blockNumbers) : matchesExact(blockNames, name)) return remove(Reason.BLOCKED_SENDER);
-        if (UNSUBSCRIBE.matcher(text).find()) return remove(Reason.UNSUBSCRIBE_CODE);
-        if (CODE.matcher(text).find() || BANK.matcher(text).find()) return keep(Reason.CODE_OR_BANK);
         if (containsAny(text, blockWords)) return remove(Reason.BLOCKED_WORD);
+        if (UNSUBSCRIBE.matcher(text).find()) return remove(Reason.UNSUBSCRIBE_CODE);
+        if ((CODE.matcher(text).find() && CODE_DIGITS.matcher(text).find()) || BANK.matcher(text).find()) return keep(Reason.CODE_OR_BANK);
         if (adLines && isAdLine(num)) return remove(Reason.AD_LINE);
         return keep(Reason.NONE);
     }

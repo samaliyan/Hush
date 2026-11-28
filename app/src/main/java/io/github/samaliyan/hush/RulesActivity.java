@@ -27,8 +27,7 @@ public final class RulesActivity extends Screen {
 
     @Override void build() {
         Prefs prefs = new Prefs(this);
-        TextView intro = ui.text("Your lists come first. Login codes and bank texts are always kept, "
-                + "except from a sender on your Block list.", 14, ui.sub, Ui.REGULAR);
+        TextView intro = ui.text("Your lists come first: a Block rule removes a text even if it looks like a login code or bank text.", 14, ui.sub, Ui.REGULAR);
         intro.setPadding(ui.dp(6), ui.dp(4), ui.dp(6), 0);
         content.addView(intro);
 

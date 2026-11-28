@@ -63,6 +63,16 @@ public final class RulesTest {
         // an unsubscribe code wins over words that look like a bank message
         remove("30001234", "فقط ۳ روز مانده! لغو۱۱", Rules.Reason.UNSUBSCRIBE_CODE);
         remove("30001234", "کد تخفیف شما: OFF50", Rules.Reason.AD_LINE);
+        // more ways of writing the unsubscribe code
+        remove("+989351112222", "حراج تا پایان موجودی\nلغو ارسال: ۱۱", Rules.Reason.UNSUBSCRIBE_CODE);
+        remove("+989351112222", "جهت لغو پیامک تبلیغاتی ۱۱ را ارسال کنید", Rules.Reason.UNSUBSCRIBE_CODE);
+        remove("+989351112222", "لغو: ارسال 11", Rules.Reason.UNSUBSCRIBE_CODE);
+        remove("+989351112222", "لغو عضویت، عدد ۱۱", Rules.Reason.UNSUBSCRIBE_CODE);
+        remove("+989351112222", "لغو/11", Rules.Reason.UNSUBSCRIBE_CODE);
+        // advertising that uses bank words without an amount is no longer protected
+        remove("30001234", "تخفیف ویژه، فقط ۲ روز مانده", Rules.Reason.AD_LINE);
+        remove("30001234", "فروش ویژه تا پایان موجودی", Rules.Reason.AD_LINE);
+        remove("30001234", "برای دریافت کد تایید هدیه کلیک کنید", Rules.Reason.AD_LINE);   // code word but no code
     }
 
     static void keeps() {
@@ -81,6 +91,9 @@ public final class RulesTest {
         keep("Snapp", "سفر شما لغو شد", Rules.Reason.NONE);
         keep("+982188776655", "نوبت شما فردا ساعت ۱۰", Rules.Reason.NONE);
         keep("+989121234567", "لغو ۲۰۲۴۱۲ سفارش", Rules.Reason.NONE);          // 6 digits: an order number, not a code
+        keep("Snapp", "سفر شما لغو شد. کد پیگیری 1234", Rules.Reason.NONE);
+        keep("+982188776655", "نوبت شما لغو شد، ساعت 10 تماس بگیرید", Rules.Reason.NONE);
+        keep("30001234", "برداشت 250000 ریال از حساب", Rules.Reason.CODE_OR_BANK);
         // a contact is never removed, even with an ad text
         Rules.Verdict v = DEFAULT.check("30001234", "تخفیف لغو11", true);
         is(!v.remove && v.reason == Rules.Reason.CONTACT, "contact kept: " + v);
@@ -95,8 +108,11 @@ public final class RulesTest {
         check(r, "+989121234567", "وام فوری بدون ضامن", true, Rules.Reason.BLOCKED_WORD);
         check(r, "+989121234567", "قرعه‌کشی بزرگ", true, Rules.Reason.BLOCKED_WORD);
         check(r, "30009999", "کد تخفیف اسنپ لغو11", false, Rules.Reason.ALLOWED_WORD);
-        // a blocked word never removes a login code
-        check(r, "+989121234567", "کد تایید وام: 1234", false, Rules.Reason.CODE_OR_BANK);
+        // the user's own block word wins over the built-in "code or bank" protection
+        check(r, "+989121234567", "کد تایید وام: 1234", true, Rules.Reason.BLOCKED_WORD);
+        Rules lr = new Rules(NONE, NONE, NONE, list("لغو"), true);
+        check(lr, "+989121234567", "تا پایان موجودی! جهت لغو پیامک بزنید", true, Rules.Reason.BLOCKED_WORD);
+        check(lr, "+989121234567", "۳ روز مانده. لغو", true, Rules.Reason.BLOCKED_WORD);
         Rules n = new Rules(list("Snapp"), list("BimehAd"), NONE, NONE, true);
         check(n, "snapp", "تخفیف لغو11", false, Rules.Reason.ALLOWED_SENDER);
         check(n, "BIMEHAD", "hello", true, Rules.Reason.BLOCKED_SENDER);

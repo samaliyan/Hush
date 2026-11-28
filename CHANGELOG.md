@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1
+
+- Your Block words now always win: a text with a blocked word is removed even if it looks like a bank text or login code.
+- Advertising that says "۳ روز مانده" or "تا پایان موجودی" is no longer mistaken for a bank text.
+- A login code is only recognised when the text also has the code's digits.
+- More ways of writing the unsubscribe code are recognised ("لغو ارسال: ۱۱", "لغو پیامک تبلیغاتی ۱۱ را ارسال کنید", "لغو/11" …).
+
 ## 1.0
 
 - Removes advertising texts as soon as they arrive, while Google Messages stays your messaging app.
